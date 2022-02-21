@@ -5,7 +5,7 @@ Tela de Pedido Venda, onde é possível inserir produtos, deletar produtos e gra
 ## Requisitos para usar o sistema
 
 Adicionar o arquivo libmysql.dll no componente FDPhysMySQLDriverLink, properties VendorLib
-![libmysql]https://github.com/thiagoslovak/PedidoVenda/blob/master/3dparth/CaminhoLibMySql.png
+![libmysql](https://github.com/thiagoslovak/PedidoVenda/blob/master/3dparth/CaminhoLibMySql.png)
 
 ## Campos 
 
