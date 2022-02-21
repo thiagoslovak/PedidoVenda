@@ -2,7 +2,9 @@
 
 Tela de Pedido Venda, onde é possível inserir produtos, deletar produtos e gravar os Pedidos.
 
+## Requisitos para usar o sistema
 
+Adicionar o arquivo libmysql.dll em
 
 ## Campos 
 
