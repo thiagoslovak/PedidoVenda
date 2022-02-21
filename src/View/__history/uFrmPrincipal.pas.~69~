@@ -1,0 +1,127 @@
+unit uFrmPrincipal;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Data.DB, Vcl.StdCtrls,
+  Vcl.Grids, Vcl.DBGrids, uProdutoController, uPedidoProdutosModel, uDmCliente, uPedidoDadosGeraisModel,
+  Datasnap.Provider, Datasnap.DBClient;
+
+type
+  TFPedidoVenda = class(TForm)
+    pnlPrincipal: TPanel;
+    grdPedidoVenda: TDBGrid;
+    edtNumPedido: TLabeledEdit;
+    edtCliente: TLabeledEdit;
+    edtCodigoProduto: TLabeledEdit;
+    edtQuantidade: TLabeledEdit;
+    edtValorUnitario: TLabeledEdit;
+    edtValorTotal: TLabeledEdit;
+    btnInserirProduto: TButton;
+    btnGravarPedido: TButton;
+    CdsPedidoProdutos: TClientDataSet;
+    CdsPedidoProdutosNumeroPedido: TAutoIncField;
+    CdsPedidoProdutosCodigoProduto: TIntegerField;
+    CdsPedidoProdutosQuantidade: TIntegerField;
+    CdsPedidoProdutosVlrUnitario: TFloatField;
+    CdsPedidoProdutosVlrTotal: TFloatField;
+    CdsPedidoDadosGerais: TClientDataSet;
+    CdsPedidoDadosGeraisNumeroPedido: TIntegerField;
+    CdsPedidoDadosGeraisDataEmissao: TDateField;
+    CdsPedidoDadosGeraisCodigoCliente: TIntegerField;
+    CdsPedidoDadosGeraisValorTotal: TFloatField;
+    DspPedidoProdutos: TDataSetProvider;
+    DspPedidoDadosGerais: TDataSetProvider;
+    procedure btnInserirProdutoClick(Sender: TObject);
+    procedure btnGravarPedidoClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+
+  private
+    procedure Inserir;
+    procedure Gravar;
+  end;
+
+var
+  FPedidoVenda: TFPedidoVenda;
+
+implementation
+
+{$R *.dfm}
+
+procedure TFPedidoVenda.FormCreate(Sender: TObject);
+begin
+  DmCliente := TDmCliente.Create(nil);
+end;
+
+procedure TFPedidoVenda.btnGravarPedidoClick(Sender: TObject);
+begin
+   Self.Gravar;
+end;
+
+procedure TFPedidoVenda.btnInserirProdutoClick(Sender: TObject);
+begin
+  Self.Inserir;
+end;
+
+procedure TFPedidoVenda.Gravar;
+var
+  oProdutoController: TProdutoController;
+begin
+  oProdutoController := TProdutoController.Create;
+  try
+
+  finally
+    FreeAndNil(oProdutoController);
+  end;
+end;
+
+procedure TFPedidoVenda.Inserir;
+var
+  oProdutoController: TProdutoController;
+
+  sErro: String;
+  vDate : TDate;
+begin
+  oProdutoController := TProdutoController.Create;
+
+  vDate := Date();
+
+  try
+    with oPedidoProdutos do
+    begin
+      CodigoProduto := StrToInt(edtCodigoProduto.Text);
+      Quantidade := StrToInt(edtQuantidade.Text);
+      VlrUnitario := StrToFloat(edtValorUnitario.Text);
+      VlrTotal :=  StrToFloat(edtValorTotal.Text);
+    end;
+
+    if oProdutoController.InserirPedidoProdutos(oPedidoProdutos, sErro) = False then
+      raise Exception.Create(sErro);
+
+    with oPedidoDadosGerais do
+    begin
+      NumeroPedido := StrToInt(edtNumPedido.Text);
+      DataEmissao := DateToStr(vDate);
+      CodigoCliente := StrToInt(edtCliente.Text);
+      ValorTotal :=  StrToFloat(edtValorTotal.Text);
+    end;
+
+    if oProdutoController.InserirPedidoDadosGerais(oPedidoDadosGerais, sErro) = False then
+      raise Exception.Create(sErro);
+  finally
+    FreeAndNil(oProdutoController);
+    FreeAndNil(oPedidoProdutos);
+    FreeAndNil(oPedidoDadosGerais);
+  end;
+
+
+end;
+
+procedure TFPedidoVenda.FormDestroy(Sender: TObject);
+begin
+  FreeAndNil(DmCliente);
+end;
+
+end.

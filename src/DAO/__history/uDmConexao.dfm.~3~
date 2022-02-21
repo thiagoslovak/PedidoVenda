@@ -1,0 +1,26 @@
+object DmConexao: TDmConexao
+  OldCreateOrder = False
+  Height = 239
+  Width = 392
+  object FDConnect: TFDConnection
+    Params.Strings = (
+      'Database=dbpedidovenda'
+      'User_Name=root'
+      'Server=localhost'
+      'Password=Westerbool1+'
+      'DriverID=MySQL')
+    LoginPrompt = False
+    Left = 40
+    Top = 24
+  end
+  object FDPhysMySQLDriverLink: TFDPhysMySQLDriverLink
+    VendorLib = 'C:\Program Files (x86)\Embarcadero\Studio\20.0\bin\libmysql.dll'
+    Left = 144
+    Top = 24
+  end
+  object FDGUIxWaitCursor: TFDGUIxWaitCursor
+    Provider = 'Forms'
+    Left = 48
+    Top = 80
+  end
+end

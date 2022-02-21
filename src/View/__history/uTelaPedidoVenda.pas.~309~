@@ -1,0 +1,236 @@
+unit uTelaPedidoVenda;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.StdCtrls, Vcl.ExtCtrls,
+  Vcl.Grids, Vcl.DBGrids, Datasnap.DBClient, Datasnap.Provider, uPedidoVendaController,
+  uDmCliente, Vcl.Mask, Vcl.DBCtrls;
+
+type
+  TFTelaPedidoVenda = class(TForm)
+    pnlPrincipal: TPanel;
+    grdPedidoVenda: TDBGrid;
+    edtCliente: TLabeledEdit;
+    edtCodigoProduto: TLabeledEdit;
+    edtQuantidade: TLabeledEdit;
+    edtValorUnitario: TLabeledEdit;
+    edtValorTotal: TLabeledEdit;
+    btnInserirProduto: TButton;
+    btnGravarPedido: TButton;
+    DspPedidoDadosGerais: TDataSetProvider;
+    CdsPedidoProdutos: TClientDataSet;
+    CdsPedidoProdutosNumeroPedido: TAutoIncField;
+    CdsPedidoProdutosCodigoProduto: TIntegerField;
+    CdsPedidoProdutosQuantidade: TIntegerField;
+    CdsPedidoProdutosVlrUnitario: TFloatField;
+    CdsPedidoProdutosVlrTotal: TFloatField;
+    DspPedidoProdutos: TDataSetProvider;
+    CdsPedidoDadosGerais: TClientDataSet;
+    CdsPedidoDadosGeraisNumeroPedido: TIntegerField;
+    CdsPedidoDadosGeraisDataEmissao: TDateField;
+    CdsPedidoDadosGeraisCodigoCliente: TIntegerField;
+    CdsPedidoDadosGeraisValorTotal: TFloatField;
+    DsPedidoProdutos: TDataSource;
+    CdsPedidoProdutosdescricao: TStringField;
+    edtNumeroPedido: TDBEdit;
+    btnCarregarPedidos: TButton;
+    gbCancelarPedido: TGroupBox;
+    edtNumPedido: TLabeledEdit;
+    btnCancelarPedido: TButton;
+    procedure FormCreate(Sender: TObject);
+    procedure btnGravarPedidoClick(Sender: TObject);
+    procedure btnInserirProdutoClick(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure edtCodigoProdutoKeyPress(Sender: TObject; var Key: Char);
+    procedure edtClienteKeyPress(Sender: TObject; var Key: Char);
+    procedure edtQuantidadeKeyPress(Sender: TObject; var Key: Char);
+    procedure edtValorUnitarioKeyPress(Sender: TObject; var Key: Char);
+    procedure grdPedidoVendaKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure edtClienteExit(Sender: TObject);
+    procedure btnCancelarPedidoClick(Sender: TObject);
+    procedure btnCarregarPedidosClick(Sender: TObject);
+    procedure edtNumPedidoKeyPress(Sender: TObject; var Key: Char);
+    procedure edtValorUnitarioChange(Sender: TObject);
+ private
+    procedure Inserir;
+    procedure Gravar;
+  end;
+
+var
+  FTelaPedidoVenda: TFTelaPedidoVenda;
+
+implementation
+
+{$R *.dfm}
+procedure TFTelaPedidoVenda.FormCreate(Sender: TObject);
+begin
+  CdsPedidoProdutos.CreateDataSet;
+  CdsPedidoDadosGerais.CreateDataSet;
+  DmCliente := TDmCliente.Create(nil);
+end;
+
+procedure TFTelaPedidoVenda.btnCancelarPedidoClick(Sender: TObject);
+var
+  vPedidoVendaController: TPedidoVendaController;
+  sErro: String;
+begin
+  vPedidoVendaController := TPedidoVendaController.Create;
+
+  try
+    if vPedidoVendaController.DeletarPedidoDadosGerais(edtNumPedido.Text, sErro) = False then
+      raise Exception.Create(sErro);
+
+    if vPedidoVendaController.DeletarPedidoProdutos(edtNumPedido.Text, sErro) = False then
+      raise Exception.Create(sErro);
+
+      CdsPedidoDadosGerais.Close;
+    CdsPedidoDadosGerais.Open;
+    CdsPedidoDadosGerais.Refresh;
+
+    CdsPedidoProdutos.Close;
+    CdsPedidoProdutos.Open;
+    CdsPedidoProdutos.Refresh;
+  finally
+    FreeAndNil(vPedidoVendaController);
+  end;
+end;
+
+procedure TFTelaPedidoVenda.btnCarregarPedidosClick(Sender: TObject);
+begin
+  CdsPedidoProdutos.Close;
+  CdsPedidoProdutos.Open;
+end;
+
+procedure TFTelaPedidoVenda.btnGravarPedidoClick(Sender: TObject);
+begin
+  Self.Gravar;
+end;
+
+procedure TFTelaPedidoVenda.btnInserirProdutoClick(Sender: TObject);
+begin
+  if (edtCodigoProduto.Text = EmptyStr) or (edtQuantidade.Text = EmptyStr) or
+  (edtValorUnitario.Text = EmptyStr) or (edtValorTotal.Text = EmptyStr) then
+  begin
+    raise Exception.Create('Para inserir o produto, preencha os dados dos campos '
+                          +'código produto, quantidade, valor unitário, valor total.');
+  end;
+
+  Self.Inserir;
+  btnGravarPedido.Enabled := True;
+end;
+
+procedure TFTelaPedidoVenda.edtClienteExit(Sender: TObject);
+begin
+  if edtCliente.Text = EmptyStr then
+  begin
+    btnCarregarPedidos.Visible := True;
+    gbCancelarPedido.Visible := True;
+    btnInserirProduto.Enabled := True;
+  end;
+end;
+
+procedure TFTelaPedidoVenda.edtClienteKeyPress(Sender: TObject; var Key: Char);
+begin
+  if (not(KEY in ['0'..'9'])) AND (Key<>#9) AND (KEY<>#13) AND (KEY<>#8) AND (KEY<>#27) THEN
+    raise Exception.Create('Campo só permite números inteiros');
+end;
+
+procedure TFTelaPedidoVenda.edtCodigoProdutoKeyPress(Sender: TObject; var Key: Char);
+begin
+  if (not(KEY in ['0'..'9'])) AND (Key<>#9) AND (KEY<>#13) AND (KEY<>#8) AND (KEY<>#27) THEN
+    raise Exception.Create('Campo só permite números inteiros');
+end;
+
+procedure TFTelaPedidoVenda.edtNumPedidoKeyPress(Sender: TObject; var Key: Char);
+begin
+  if (not(KEY in ['0'..'9'])) AND (Key<>#9) AND (KEY<>#13) AND (KEY<>#8) AND (KEY<>#27) THEN
+    raise Exception.Create('Campo só permite números inteiros.');
+end;
+
+procedure TFTelaPedidoVenda.edtQuantidadeKeyPress(Sender: TObject;var Key: Char);
+begin
+  if (not(KEY in ['0'..'9'])) AND (Key<>#9) AND (KEY<>#13) AND (KEY<>#8) AND (KEY<>#27) THEN
+    raise Exception.Create('Campo só permite números inteiros.');
+end;
+
+procedure TFTelaPedidoVenda.edtValorUnitarioChange(Sender: TObject);
+begin
+  edtValorTotal.Text := IntToStr(StrToInt(edtValorUnitario.Text) * StrToInt(edtQuantidade.Text));
+end;
+
+procedure TFTelaPedidoVenda.edtValorUnitarioKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  if (not(KEY in ['0'..'9', ','])) AND (Key<>#9) AND (KEY<>#13) AND (KEY<>#8) AND (KEY<>#27) THEN
+    raise Exception.Create('Campo só permite números.');
+end;
+
+procedure TFTelaPedidoVenda.Gravar;
+var
+  vPedidoVendaController: TPedidoVendaController;
+  sErro: String;
+  vDate: TDate;
+begin
+  vPedidoVendaController := TPedidoVendaController.Create;
+  vDate := Date();
+  try
+    CdsPedidoDadosGerais.Close;
+    CdsPedidoDadosGerais.Open;
+    CdsPedidoDadosGerais.Append;
+    CdsPedidoDadosGeraisNumeroPedido.AsInteger := StrToInt(edtNumeroPedido.Text);
+    CdsPedidoDadosGeraisDataEmissao.AsDateTime := vDate;
+    CdsPedidoDadosGeraisCodigoCliente.AsInteger := StrToInt(edtCliente.Text);
+    CdsPedidoDadosGeraisValorTotal.AsFloat :=  StrToFloat(edtValorTotal.Text);
+    CdsPedidoDadosGerais.Post;
+
+    if vPedidoVendaController.InserirPedidoDadosGerais(CdsPedidoDadosGerais, sErro) = False then
+      raise Exception.Create(sErro);
+
+    if vPedidoVendaController.InserirPedidoProdutos(CdsPedidoProdutos, sErro) = False then
+       raise Exception.Create(sErro);
+
+  finally
+    FreeAndNil(vPedidoVendaController);
+  end;
+end;
+
+procedure TFTelaPedidoVenda.grdPedidoVendaKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if Key = VK_DELETE then
+  begin
+    if MessageDlg('Deseja Excluir esse Registo ?',mtConfirmation,[mbYes,mbNo],0)=mrYes then
+    begin
+      CdsPedidoDadosGerais.Open;
+      CdsPedidoDadosGerais.Edit;
+      CdsPedidoDadosGerais.Delete;
+      CdsPedidoDadosGerais.ApplyUpdates(0);
+
+      CdsPedidoProdutos.Open;
+      CdsPedidoProdutos.Edit;
+      CdsPedidoProdutos.Delete;
+      CdsPedidoProdutos.ApplyUpdates(0);
+    end;
+  end;
+end;
+
+procedure TFTelaPedidoVenda.Inserir;
+begin
+  CdsPedidoProdutos.Close;
+  CdsPedidoProdutos.Open;
+  CdsPedidoProdutos.Append;
+  CdsPedidoProdutosCodigoProduto.AsInteger := StrToInt(edtCodigoProduto.Text);
+  CdsPedidoProdutosQuantidade.AsInteger := StrToInt(edtQuantidade.Text);
+  CdsPedidoProdutosVlrUnitario.AsFloat := StrToFloat(edtValorUnitario.Text);
+  CdsPedidoProdutosVlrTotal.AsFloat :=  StrToFloat(edtValorTotal.Text);
+  CdsPedidoProdutos.ApplyUpdates(1);
+  CdsPedidoProdutos.Refresh;
+end;
+
+procedure TFTelaPedidoVenda.FormDestroy(Sender: TObject);
+begin
+  FreeAndNil(DmCliente);
+end;
+
+end.

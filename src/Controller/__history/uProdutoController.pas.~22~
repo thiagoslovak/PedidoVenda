@@ -1,0 +1,34 @@
+unit uProdutoController;
+
+interface
+
+uses
+  uPedidoProdutosModel, System.SysUtils, uDmCliente;
+
+type
+  TProdutoController = class
+    public
+      constructor Create;
+      destructor Destroy; override;
+
+      function Inserir(oProduto: TPedidoProdutos; out sErro: String): Boolean;
+  end;
+implementation
+
+constructor TProdutoController.Create;
+begin
+  DmCliente := TDmCliente.Create(nil);
+end;
+
+function TProdutoController.Inserir(oProduto: TPedidoProdutos; out sErro: String): Boolean;
+begin
+  Result := DmCliente.Inserir(oProduto, sErro);
+end;
+
+destructor TProdutoController.Destroy;
+begin
+  FreeAndNil(DmCliente);
+  inherited;
+end;
+
+end.

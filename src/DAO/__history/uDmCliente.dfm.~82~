@@ -1,0 +1,191 @@
+object DmCliente: TDmCliente
+  OldCreateOrder = False
+  Height = 256
+  Width = 473
+  object QPedidoProdutos: TFDQuery
+    CachedUpdates = True
+    AggregatesActive = True
+    Connection = DmConexao.FDConnect
+    SQL.Strings = (
+      'SELECT *'
+      '  FROM pedidoProdutos;')
+    Left = 32
+    Top = 16
+    object QPedidoProdutosNumeroPedido: TFDAutoIncField
+      DisplayLabel = 'N'#250'mero Pedido'
+      FieldName = 'NumeroPedido'
+      ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
+    end
+    object QPedidoProdutosCodigoProduto: TIntegerField
+      DisplayLabel = 'C'#243'digo Produto'
+      FieldName = 'CodigoProduto'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object QPedidoProdutosQuantidade: TIntegerField
+      FieldName = 'Quantidade'
+    end
+    object QPedidoProdutosVlrUnitario: TFloatField
+      DisplayLabel = 'Vlr. Unit'#225'rio'
+      FieldName = 'VlrUnitario'
+    end
+    object QPedidoProdutosVlrTotal: TFloatField
+      DisplayLabel = 'Vlr. Total'
+      FieldName = 'VlrTotal'
+    end
+    object QPedidoProdutosdescricao: TStringField
+      AutoGenerateValue = arDefault
+      DisplayLabel = 'Descri'#231#227'o'
+      FieldName = 'descricao'
+      Origin = 'Descricao'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 30
+    end
+  end
+  object QPedidoDadosGerais: TFDQuery
+    CachedUpdates = True
+    AggregatesActive = True
+    Connection = DmConexao.FDConnect
+    SQL.Strings = (
+      'SELECT *'
+      '  FROM PedidoDadosGerais;')
+    Left = 136
+    Top = 16
+    object QPedidoDadosGeraisNumeroPedido: TIntegerField
+      DisplayLabel = 'N'#250'mero Pedido'
+      FieldName = 'NumeroPedido'
+      Origin = 'NumeroPedido'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object QPedidoDadosGeraisDataEmissao: TDateField
+      AutoGenerateValue = arDefault
+      DisplayLabel = 'Data Emiss'#227'o'
+      FieldName = 'DataEmissao'
+      Origin = 'DataEmissao'
+    end
+    object QPedidoDadosGeraisCodigoCliente: TIntegerField
+      DisplayLabel = 'C'#243'digo Cliente'
+      FieldName = 'CodigoCliente'
+      Origin = 'CodigoCliente'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object QPedidoDadosGeraisValorTotal: TFloatField
+      AutoGenerateValue = arDefault
+      DisplayLabel = 'Valor Total'
+      FieldName = 'ValorTotal'
+      Origin = 'ValorTotal'
+    end
+  end
+  object QAlterar: TFDQuery
+    Connection = DmConexao.FDConnect
+    SQL.Strings = (
+      'UPDATE cliente'#10'SET nome = @nome,'#10
+      '       tipo = @tipo,'#10'   '
+      '       documento = @documento,'#10'   '
+      '       telefone = @telefone'#10' '
+      ' WHERE (id = @id);')
+    Left = 304
+    Top = 184
+    ParamData = <
+      item
+        Name = 'nome'
+        DataType = ftString
+        ParamType = ptInput
+      end
+      item
+        Name = 'tipo'
+        DataType = ftString
+        ParamType = ptInput
+      end
+      item
+        Name = 'telefone'
+        DataType = ftString
+        ParamType = ptInput
+      end
+      item
+        Name = 'documento'
+        DataType = ftString
+        ParamType = ptInput
+      end
+      item
+        Name = 'id'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object QExcluir: TFDQuery
+    Connection = DmConexao.FDConnect
+    SQL.Strings = (
+      'DELETE FROM cliente'#10' '
+      ' WHERE (id = @id);')
+    Left = 400
+    Top = 176
+    ParamData = <
+      item
+        Name = 'id'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object QCliente: TFDQuery
+    SQL.Strings = (
+      'SELECT *'
+      '  FROM Clientes;')
+    Left = 368
+    Top = 96
+    object FDAutoIncField2: TFDAutoIncField
+      FieldName = 'Codigo'
+      Origin = 'Codigo'
+      ReadOnly = True
+    end
+    object StringField2: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'Nome'
+      Origin = 'Nome'
+      Size = 30
+    end
+    object StringField3: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'Cidade'
+      Origin = 'Cidade'
+      Size = 30
+    end
+    object StringField4: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'UF'
+      Origin = 'UF'
+      FixedChar = True
+      Size = 2
+    end
+  end
+  object QProdutos: TFDQuery
+    Connection = DmConexao.FDConnect
+    SQL.Strings = (
+      'SELECT pd.*,'
+      '       p.descricao'
+      '  FROM pedidoProdutos pd,'
+      '       produtos p'
+      ' WHERE pd.codigoproduto = p.codigo;'
+      '')
+    Left = 232
+    Top = 16
+    object QProdutosCodigo: TIntegerField
+      DisplayLabel = 'C'#243'digo'
+      FieldName = 'Codigo'
+      Required = True
+    end
+    object QProdutosDescricao: TStringField
+      DisplayLabel = 'Descri'#231#227'o'
+      FieldName = 'Descricao'
+      Size = 30
+    end
+    object QProdutosPrecoVenda: TFloatField
+      DisplayLabel = 'Pre'#231'o Venda'
+      FieldName = 'PrecoVenda'
+    end
+  end
+end

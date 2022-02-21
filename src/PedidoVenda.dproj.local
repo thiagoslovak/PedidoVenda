@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2021/04/26 08:36:25.000.454,=C:\Users\thiago.belordi\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2022/02/17 21:03:12.000.710,=C:\Users\thiago.belordi\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2022/02/17 21:06:39.000.813,=C:\Users\thiago.belordi\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2022/02/17 21:24:08.000.109,=C:\Users\thiago.belordi\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2022/02/17 21:27:42.000.259,C:\Users\thiago.belordi\Documents\Embarcadero\Studio\Projects\Unit1.pas=C:\Users\thiago.belordi\Desktop\Thiago\teste\teste Wk Technology\teste2\teste3\src\View\uTelaPedidoVenda.pas</Transaction>
+    <Transaction>2022/02/17 21:27:42.000.259,C:\Users\thiago.belordi\Documents\Embarcadero\Studio\Projects\Unit1.dfm=C:\Users\thiago.belordi\Desktop\Thiago\teste\teste Wk Technology\teste2\teste3\src\View\uTelaPedidoVenda.dfm</Transaction>
+    <Transaction>2022/02/17 21:28:02.000.178,C:\Users\thiago.belordi\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\thiago.belordi\Desktop\Thiago\teste\teste Wk Technology\teste2\teste3\src\PedidoVenda.dproj</Transaction>
+    <Transaction>2022/02/17 21:32:47.000.116,=C:\Users\thiago.belordi\Desktop\Thiago\teste\teste Wk Technology\teste2\teste3\src\Unit1.pas</Transaction>
+    <Transaction>2022/02/17 21:32:56.000.563,C:\Users\thiago.belordi\Desktop\Thiago\teste\teste Wk Technology\teste2\teste3\src\Unit1.pas=C:\Users\thiago.belordi\Desktop\Thiago\teste\teste Wk Technology\teste2\teste3\src\DTO\uPedidoVendaDTO.pas</Transaction>
+    <Transaction>2022/02/17 21:33:24.000.226,=C:\Users\thiago.belordi\Desktop\Thiago\teste\teste Wk Technology\teste2\teste3\src\Unit1.pas</Transaction>
+    <Transaction>2022/02/17 21:33:33.000.985,C:\Users\thiago.belordi\Desktop\Thiago\teste\teste Wk Technology\teste2\teste3\src\Unit1.pas=C:\Users\thiago.belordi\Desktop\Thiago\teste\teste Wk Technology\teste2\teste3\src\Controller\uProdutoController.pas</Transaction>
+    <Transaction>2022/02/17 21:34:45.000.542,=C:\Users\thiago.belordi\Desktop\Thiago\teste\teste Wk Technology\teste2\teste3\src\Unit1.pas</Transaction>
+    <Transaction>2022/02/17 21:35:12.000.060,C:\Users\thiago.belordi\Desktop\Thiago\teste\teste Wk Technology\teste2\teste3\src\Unit1.pas=C:\Users\thiago.belordi\Desktop\Thiago\teste\teste Wk Technology\teste2\teste3\src\DAO\uDmConexao.pas</Transaction>
+    <Transaction>2022/02/17 21:35:12.000.060,C:\Users\thiago.belordi\Desktop\Thiago\teste\teste Wk Technology\teste2\teste3\src\Unit1.dfm=C:\Users\thiago.belordi\Desktop\Thiago\teste\teste Wk Technology\teste2\teste3\src\DAO\uDmConexao.dfm</Transaction>
+    <Transaction>2022/02/17 21:35:36.000.684,=C:\Users\thiago.belordi\Desktop\Thiago\teste\teste Wk Technology\teste2\teste3\src\Unit1.pas</Transaction>
+    <Transaction>2022/02/17 21:36:08.000.678,C:\Users\thiago.belordi\Desktop\Thiago\teste\teste Wk Technology\teste2\teste3\src\Unit1.pas=C:\Users\thiago.belordi\Desktop\Thiago\teste\teste Wk Technology\teste2\teste3\src\DAO\uDmCliente.pas</Transaction>
+    <Transaction>2022/02/17 21:36:08.000.678,C:\Users\thiago.belordi\Desktop\Thiago\teste\teste Wk Technology\teste2\teste3\src\Unit1.dfm=C:\Users\thiago.belordi\Desktop\Thiago\teste\teste Wk Technology\teste2\teste3\src\DAO\uDmCliente.dfm</Transaction>
+    <Transaction>2022/02/19 09:56:03.000.945,C:\Users\thiago.belordi\Desktop\Thiago\teste\teste Wk Technology\teste2\teste3\src\Controller\uPedidoVendaController.pas=C:\Users\thiago.belordi\Desktop\Thiago\teste\teste Wk Technology\teste2\teste3\src\Controller\uProdutoController.pas</Transaction>
+  </Transactions>
+</BorlandProject>

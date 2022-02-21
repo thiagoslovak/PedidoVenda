@@ -1,0 +1,21 @@
+unit uProdutoController;
+
+interface
+
+uses
+  uPedidoProdutosModel, System.SysUtils, uDmCliente;
+
+type
+  TProdutoController = class
+    public
+      function InserirPedidoProdutos(oProduto: TPedidoProdutos; out sErro: String): Boolean;
+      function InserirPedidoDadosGerais(oPedidoDadosGerais: TPedidoDadosGerais; out sErro: String): Boolean;
+  end;
+implementation
+
+function TProdutoController.InserirPedidoProdutos(oProduto: TPedidoProdutos; out sErro: String): Boolean;
+begin
+  Result := DmCliente.Inserir(oProduto, sErro);
+end;
+
+end.
